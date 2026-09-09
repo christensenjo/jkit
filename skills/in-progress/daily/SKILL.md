@@ -1,7 +1,7 @@
 ---
 name: daily
 description: Start, update, or close today's plan in .scratch/DAILY.
-argument-hint: start | next | close
+argument-hint: Start | Next | Close
 disable-model-invocation: true
 ---
 
@@ -13,32 +13,37 @@ This skill writes that file and picks a **slice**. It does not implement tickets
 
 Address the user as Joel. Read `docs/agents/people.md` before naming Nate, Seth, or Luke.
 
+## Load
+
+`.scratch/` is gitignored. Open those files by path.
+
+1. Today's path: `<project>/.scratch/DAILY/YYYY-MM-DD.md` (session calendar date).
+2. **Read** that path. A hit means the file exists. A missing-file error means it does not. That Read is the only existence check. An empty workspace search is unsearched, not a miss.
+3. **Read** yesterday's ISO path, if any.
+4. **Read** `docs/agents/issue-tracker.md` when this workspace uses local `.scratch` tickets.
+
+Create the `.scratch/DAILY` directory only after today's Read misses.
+
+Done when today's path has been Read (hit or miss) and yesterday's leftovers are in hand.
+
 ## Mode
 
-Pick one:
+Pick one after Load:
 
-- **start** when there is no file for today, or Joel said start.
-- **next** when today's file exists and the day is still open (he finished something, asked what's left, or named a new constraint).
-- **close** when he is done for the day.
+- **Start** when today's Read missed, or Joel said start.
+- **Next** when today's Read hit and the day is still open (he finished something, asked what's left, or named a new constraint).
+- **Close** when he is done for the day.
 
 Done when exactly one mode is chosen.
 
-## Load
-
-1. Today's path: `<workspace>/.scratch/DAILY/YYYY-MM-DD.md`. Create `.scratch/DAILY` if it is missing.
-2. Yesterday's file, if any. Also accept a leftover `M_D_YYYY.md` and rename it to ISO.
-3. `docs/agents/issue-tracker.md` when this workspace uses local `.scratch` tickets.
-
-Done when today's path is known and yesterday's leftovers are in hand.
-
-## Scan (start and next)
+## Scan (Start and Next)
 
 Bounded. Findings become lines on the daily file, not a transcript dump.
 
-- Carry-forward from yesterday: unchecked Errands, waiting-on Work, open tickets, Fun/Games, Life Projects, the Priority / Backlog grouping. Leave checked errands and finished slices behind.
+- Carry-forward from yesterday: unchecked Errands, **open** Work, Fun/Games, Life Projects, the Priority / Backlog grouping. Yesterday's **landed** Work and checked errands stay off today's file.
 - Cursor chats from the last few days that mention Nate, Seth, or Luke.
-- Dated files under `docs/agents/` (weekend threads, handoffs).
-- Every `.scratch/<effort>/issues/*.md`. Skip `CLOSED`, `DAILY`, and `EVIDENCE`. Read `Status:`, `Type:`, and `Blocked by:`.
+- Dated files under `docs/agents/` (weekend threads, handoffs). List that directory with the shell, then Read. It is often gitignored too.
+- Every `.scratch/<effort>/issues/*.md`. List those directories with the shell (`Get-ChildItem` / `ls`), then Read each file. Skip `CLOSED`, `DAILY`, and `EVIDENCE`. Read `Status:`, `Type:`, and `Blocked by:`.
 
 Done when every live effort is under Priority, under Backlog, or skipped.
 
@@ -60,19 +65,17 @@ Use the template. Keep Joel's wording. Put today's prompt in **Intent** (Minecra
 
 Until the file already names them, seed **Priority** with `season-long-ui`, `team-season-seth-views`, `one-team-one-player-views`. Other live efforts go under **Backlog**. Move an effort when he says to.
 
-Under each effort list:
+Under each effort list tickets by **name**, with path. **Landed** today: `- [x] [Name](path) — …`. **Open** (takeable, waiting, blocked, claimed): `- [Name](path) — Status and who they wait on`. A waiting line when the effort has no open ticket.
 
-- takeable tickets by **name**, with path
-- other open tickets by name, with Status and who they wait on
-- a waiting line when there is no open ticket
+Errands and Life Projects keep their own `- [ ]` / `- [x]` boxes. The empty checkbox stays there.
 
 Life Projects stay listed. Recommend one only when he asked for a life-project day or named a first slice.
 
 Fun/Games stay listed. They are a valid slice when Intent says so.
 
-On **close**, tick what landed and write `## Still open`. That section is tomorrow's primary source.
+On **Close**, mark landed Work `- [x]` and write `## Still open` from the remaining `-` lines. That section is tomorrow's primary source.
 
-Done when the file matches the template and every carry-forward item is present or checked off.
+Done when the file matches the template, every open carry-forward item is present, and every landed Work line is `- [x]`.
 
 ## Pick
 
@@ -129,4 +132,4 @@ Done when he can paste the prompt into a new agent, or knows there is nothing ta
 ## Still open
 ```
 
-`## Still open` is for **close** (and the next **start** to read). Leave it out until then.
+`## Still open` is for **Close** (and the next **Start** to read). Leave it out until then.
