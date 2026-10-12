@@ -1,116 +1,115 @@
 ---
 name: daily
-description: Start, update, or close today's plan in .scratch/DAILY.
+description: Start, update, or close today's plan in /stats/.scratch/DAILY.
 argument-hint: Start | Next | Close
 disable-model-invocation: true
 ---
 
 # Daily
 
-Plan the day in the current project's `.scratch/DAILY/`. One file per calendar day, named `YYYY-MM-DD.md`.
+Plan Joel's day in `C:\Users\chris\Herd\stats\.scratch\DAILY\`. Joel may call this `/stats/.scratch/DAILY`. One file per calendar day, named `YYYY-MM-DD.md`.
 
-This skill writes that file and picks a **slice**. It does not implement tickets. Hand a **takeable** ticket to a new session with the copyable prompt.
+That directory is the only allowed home for daily files. Use the local-machine shell to read and write it because `.scratch` is gitignored and may not exist in an attached worktree. Never substitute the current checkout, a Delta worktree, another clone, or another `.scratch/DAILY`. If the canonical path is unavailable, stop and tell Joel rather than creating the file elsewhere.
 
-Address the user as Joel. Read `docs/agents/people.md` before naming Nate, Seth, or Luke.
+This skill writes the plan and picks a **slice**. It does not implement tickets. Hand a **takeable** ticket to a new session with the copyable prompt.
+
+Address the user as Joel. Read `C:\Users\chris\Herd\stats\docs\agents\people.md` before naming Nate, Seth, or Luke.
 
 ## Load
 
-`.scratch/` is gitignored. Open those files by path.
+1. Get the session calendar date.
+2. Read the exact path `C:\Users\chris\Herd\stats\.scratch\DAILY\YYYY-MM-DD.md`. A hit means today's file exists. A missing-file error means it does not. This read is the only existence check.
+3. Read yesterday's ISO-date file at the same canonical root, if it exists.
+4. Read `C:\Users\chris\Herd\stats\docs\agents\issue-tracker.md` when local `.scratch` tickets are in use.
+5. Before any write, verify that the destination's parent is exactly `C:\Users\chris\Herd\stats\.scratch\DAILY`. Create that directory only after today's exact read misses.
 
-1. Today's path: `<project>/.scratch/DAILY/YYYY-MM-DD.md` (session calendar date).
-2. **Read** that path. A hit means the file exists. A missing-file error means it does not. That Read is the only existence check. An empty workspace search is unsearched, not a miss.
-3. **Read** yesterday's ISO path, if any.
-4. **Read** `docs/agents/issue-tracker.md` when this workspace uses local `.scratch` tickets.
-
-Create the `.scratch/DAILY` directory only after today's Read misses.
-
-Done when today's path has been Read (hit or miss) and yesterday's leftovers are in hand.
+Done when today's canonical path has been read, yesterday's carry-forward is in hand, and no alternate destination has been considered.
 
 ## Mode
 
-Pick one after Load:
+Pick exactly one after Load:
 
-- **Start** when today's Read missed, or Joel said start.
-- **Next** when today's Read hit and the day is still open (he finished something, asked what's left, or named a new constraint).
-- **Close** when he is done for the day.
+- **Start** when today's read missed, or Joel said start.
+- **Next** when today's read hit and the day is open.
+- **Close** when Joel is done for the day.
 
-Done when exactly one mode is chosen.
+## Scan
 
-## Scan (Start and Next)
+Run this bounded scan for Start and Next. Put conclusions in the daily file, not a transcript dump.
 
-Bounded. Findings become lines on the daily file, not a transcript dump.
+- Carry forward yesterday's unchecked Errands and Work items, the Projects list, and useful Backlog state. Leave yesterday's completed Work and checked Errands behind.
+- Search Delta threads from the last few days that mention Nate, Seth, or Luke. Use the delta-threads skill.
+- List `C:\Users\chris\Herd\stats\docs\agents\`, then read dated handoffs and weekend notes.
+- Read every `C:\Users\chris\Herd\stats\.scratch\<effort>\issues\*.md`. Skip `CLOSED`, `DAILY`, and `EVIDENCE`. Read `Status:`, `Type:`, and `Blocked by:`.
+- Include every effort with open work under Backlog. Remove an effort only when all of its tickets are resolved or the effort directory is gone.
 
-- Carry-forward from yesterday: unchecked Errands, unchecked **focus** boxes (candidates for today's Priority when Intent is quiet), Fun/Games, Life Projects, and the **inventory** under Backlog. Yesterday's **landed** focus boxes and checked errands stay off today's file. Old files that still group tickets under Priority: those effort lists are inventory. Fold them into Backlog.
-- Cursor chats from the last few days that mention Nate, Seth, or Luke.
-- Dated files under `docs/agents/` (weekend threads, handoffs). List that directory with the shell, then Read. It is often gitignored too.
-- Every `.scratch/<effort>/issues/*.md`. List those directories with the shell (`Get-ChildItem` / `ls`), then Read each file. Skip `CLOSED`, `DAILY`, and `EVIDENCE`. Read `Status:`, `Type:`, and `Blocked by:`.
-
-Done when every live effort is under Backlog or skipped, and today's focus list is in hand (from Intent, leftover unchecked focus boxes, or yesterday's Still open).
+Done when today's Work list is in hand and every live effort has a current one-bullet Backlog summary.
 
 ## Takeable
 
 A ticket is **takeable** when all of these hold:
 
-- `Status:` is `ready-for-agent`, or `unclaimed` on a `Type: task` an agent can run alone
-- `Status:` is not `resolved`, `wontfix`, or `claimed`
-- every id in `Blocked by:` is `resolved` in that same effort (blank is fine)
+- `Status:` is `ready-for-agent`, or it is `unclaimed` with `Type: task` and an agent can run it alone.
+- Every id in `Blocked by:` is `resolved` in the same effort. Blank is fine.
 
-`ready-for-human`, grilling, and blocked tickets stay on the file. They are not takeable.
+`ready-for-human`, grilling, blocked, claimed, resolved, and wontfix tickets are not takeable.
 
-Done when every open ticket in scope is labeled takeable or not.
+Done when every open ticket considered for today's slice is labeled takeable or not.
 
-## Write the file
+## Write
 
-Use the template. Keep Joel's wording. Put today's prompt in **Intent** (Minecraft for an hour, UI only, Views sheet, and so on).
+Keep Joel's wording and use today's layout.
 
-### Focus
+### Intent
 
-**Priority** is only today's **focus**: a short checkbox list of immediately actionable items. They come from Intent. A focus item may be a ticket, a call, a paste, or other work. Link a ticket when one exists. Status words stay off these lines. The marked slice gets `**Marked slice.**` on its box.
+Write one or two concise sentences. Name what Joel is finishing today and the next priority he or Nate has already named. Do not turn Intent into a task list.
 
-Write focus from Intent. When Intent is quiet, keep yesterday's leftover unchecked focus boxes. When both are empty, ask what today's focus is. One question. Skip a full grill on a normal start.
+### Errands
 
-### Inventory
+Use checkboxes. On Start, carry forward only unchecked errands.
 
-**Backlog** is the parked **inventory**: tickets grouped by effort, with path and status. It is the last section in the file, after Fun/Games, Life Projects, and Comms. Scan it when Joel asks where an effort stands.
+### Work
 
-Under each effort list tickets by **name**, with path. **Landed** today: `- [x] [Name](path) — …`. **Open** (takeable, waiting, blocked, claimed): `- [Name](path) — Status and who they wait on`. A waiting line when the effort has no open ticket.
+Put today's focus checkboxes directly under `## Work`. There is no Priority subsection. Preserve completed items during Next and Close so the file records the day. Mark exactly one current or completed slice with `**Marked slice.**`.
 
-Promote an inventory line into focus when Intent or Joel names it.
+Work comes from Joel's stated intent. When Intent is quiet, use yesterday's unchecked Work. When both are empty, ask one question about today's focus before writing the file.
 
-### Standing lists
+Link a ticket when one exists. Status words stay off Work lines.
 
-Errands and Life Projects keep their own `- [ ]` / `- [x]` boxes. The empty checkbox stays there.
+### Comms
 
-Life Projects stay listed. Recommend one only when he asked for a life-project day or named a first slice.
+Nest `### Comms` under Work. Record only current, consequential collaborator context in short bullets. Keep ownership and wording consistent with `docs/agents/people.md`.
 
-Fun/Games stay listed. They are a valid slice when Intent says so.
+### Backlog
 
-On **Close**, mark landed focus `- [x]` and write `## Still open` from the remaining unchecked focus boxes. That section is tomorrow's focus source. Inventory stays under Backlog.
+Nest `### Backlog` under Work. Add a `#### <effort>` heading for every live effort, then one bullet saying what landed, what remains, and the next blocker or takeable step. Bullets make the summaries easy to scan. This is a compact effort summary, not a ticket inventory.
 
-Done when the file matches the template, Priority is only focus checkboxes, every live effort is under Backlog or skipped, and every landed focus box is `- [x]`.
+### Projects
+
+`## Projects` is the final section. Copy yesterday's Projects list forward with Joel's wording and order. Preserve its checkbox or numbered-list form. Do not recommend a Project unless Joel asks for a project day or names one as today's slice.
+
+The daily file has no Fun/Games, Priority, Life Projects, or Still open section.
+
+On Close, check every landed Work item and leave unfinished items unchecked in Work. Tomorrow's Start reads those unchecked items directly.
+
+Done when the file follows the template, has substantive Intent and Work content, includes every live effort under Backlog, and lives only at the canonical path.
 
 ## Pick
 
-Recommend 1-3 slices. Mark one. Follow Intent. Prefer a takeable ticket linked from a focus box. If Priority has none, say so. Offer Backlog only as an option, unless Intent already pointed there.
+Recommend one to three slices and mark one. Follow Intent. Prefer a takeable ticket linked from Work. If Work has no takeable ticket, say so. Offer Backlog only when Intent points there or Joel asks for options.
 
-Grill when he is unclear about the list or feels blocked. Facts are yours; invoke `/grilling`. Skip grilling on a normal start.
-
-Done when one marked slice is on the table.
+Grill only when Joel feels blocked or asks to challenge the list. Skip grilling on a normal Start.
 
 ## Copyable prompt
 
-Emit this block when a focus box links at least one takeable ticket, or Intent pointed at Backlog and Backlog has one.
+Emit this block when a Work checkbox links at least one takeable ticket, or Intent puts Backlog in scope and Backlog has one:
 
 ```
 /wayfinder /loop until you've completed all of the following local /.scratch tickets that are open and takeable:
 .scratch/<effort>/issues/<file>.md
 ```
 
-One path per takeable ticket linked from a focus box. Inventory tickets only when Backlog is in scope.
-
-If the scoped set has no takeable ticket, say that. Write no prompt.
-
-Done when he can paste the prompt into a new agent, or knows there is nothing takeable.
+Include one path per scoped takeable ticket. If none are takeable, say that and write no prompt.
 
 ## Template
 
@@ -119,30 +118,25 @@ Done when he can paste the prompt into a new agent, or knows there is nothing ta
 
 ## Intent
 
+<What Joel is finishing. What comes next.>
 
 ## Errands
-- [ ] 
+- [ ] <errand>
 
 ## Work
 
-### Priority
-- [ ] 
+- [ ] <focus item> **Marked slice.**
 
-## Fun/Games
+### Comms
 
-## Life Projects
+- <current collaborator context>
 
-## Comms
+### Backlog
 
-## Backlog
+#### <live-effort>
+- <One-sentence current state.>
 
-#### season-long-ui
+## Projects
 
-#### team-season-seth-views
-
-#### one-team-one-player-views
-
-## Still open
+<Yesterday's Projects list, preserved.>
 ```
-
-`## Still open` is for **Close** (and the next **Start** to read). Leave it out until then.
