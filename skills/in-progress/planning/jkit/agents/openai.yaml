@@ -1,0 +1,5 @@
+interface:
+  display_name: "jkit"
+  short_description: "Plan and build dev work through efforts and tickets"
+policy:
+  allow_implicit_invocation: false
