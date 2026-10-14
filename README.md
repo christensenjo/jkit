@@ -1,4 +1,6 @@
-# jkit 📦
+![jkit](assets/banner.png)
+
+# jkit
 
 > [!WARNING]
 > I'm still building jkit. Expect significant changes.
