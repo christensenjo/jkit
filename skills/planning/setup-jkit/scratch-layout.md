@@ -6,7 +6,7 @@ Every `.scratch` tracker uses this layout. Folders cluttering the top level get 
 .scratch/
   AGENTS.md          tracker rules for agents
   README.md          what this repo is, for humans
-  cloud/             cloud agent environment scripts (install, start)
+  cloud/             cloud environment: spec.md, state.md, install.sh
   docs/              tracker docs: issue-tracker.md, domain.md, triage-labels.md
     adr/             architecture decision records
     evidence/        verification evidence, one folder per run

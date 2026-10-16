@@ -12,7 +12,7 @@ jkit is largely based on [Matt Pocock's skills](https://github.com/mattpocock/sk
 ## Getting Started
 
 1. Install via skills.sh `npx skills@latest add christensenjo/jkit`
-2. Run `/setup-jkit`. This will guide you through choosing an issue tracker, triage labels, and domain docs. More on that below.
+2. Run `/setup-jkit`. This will guide you through choosing an issue tracker, triage labels, and domain docs, and it writes `~/.agents/JKIT.md`. More on these below.
 3. Use `/jkit` with any prompt
 
 ## Skills Workflow
@@ -58,6 +58,10 @@ The main workflow of jkit revolves around the self-named [`/jkit` skill](skills/
 
 While it should work with any issue tracker of your choice (GitHub, GitLab, Linear), /jkit defaults to using a simple `.scratch` directory of markdown files in each project. This suggested approach is co-located with the rest of your code, but safely gitignored and scoped for personal use on any team. It can be published as a private git repo parallelized cloud agent access. (Planned: teach Cursor Projects or similar to sync with your issue tracker.)
 
+### `~/.agents/JKIT.md`
+
+`~/.agents/JKIT.md` (`$HOME/.agents/JKIT.md`) lives in the current machine's home directory, one file per machine, and is not committed to a workspace. It records the planner repo, the stack, cloud use, and the workspaces `/daily-planner` runs in. `/setup-jkit` writes it. `/setup-cloud-env` writes the install script a fresh machine uses to boot its dev environment and recreate it. The field list is in [`personal-docs.md`](skills/planning/setup-jkit/personal-docs.md).
+
 ### Manage Human Context-Load
 
 `/daily-planner` is designed for use with a personal assistant bot such as Grok Bot or OpenAI Dots. Get a go-to daily file that tracks everything in your life at a glance. Each primary workspace you specify then gets a similar `/daily-work` file that tracks short-term tasks to keep productivity high.
@@ -70,7 +74,8 @@ While it should work with any issue tracker of your choice (GitHub, GitLab, Line
 | skill | use it when |
 |---|---|
 | [`/jkit`](skills/planning/jkit/SKILL.md) | default entry point for engineering work: plan an effort, work a ticket, check status, triage, close an effort. |
-| [`/setup-jkit`](skills/planning/setup-jkit/SKILL.md) | you're starting jkit in a repo. records your tracker (`.scratch`, GitHub, GitLab) and doc layout. run once per repo. |
+| [`/setup-jkit`](skills/planning/setup-jkit/SKILL.md) | you're starting jkit in a repo. records your tracker (`.scratch`, GitHub, GitLab), doc layout, and `~/.agents/JKIT.md` in this machine's home directory. run once per repo. |
+| [`/setup-cloud-env`](skills/planning/setup-cloud-env/SKILL.md) | a fresh machine should boot its dev environment and recreate `~/.agents/JKIT.md`. writes or refreshes that repo's cloud install script. |
 | [`/ask-joel`](skills/planning/ask-joel/SKILL.md) | you're new to jkit, or unsure which skill fits or whether to start a fresh chat. |
 | [`/to-spec`](skills/planning/to-spec/SKILL.md) | you want a written spec for an effort before it's split into tickets. `/jkit` uses it for you. |
 | [`/to-tickets`](skills/planning/to-tickets/SKILL.md) | you want a plan split into thin, vertical tickets, approved by you before anything is written. `/jkit` uses it for you. |

@@ -1,0 +1,5 @@
+interface:
+  display_name: "Setup cloud env"
+  short_description: "Write a cloud machine install script"
+policy:
+  allow_implicit_invocation: false
