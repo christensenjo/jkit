@@ -1,6 +1,6 @@
 ---
 name: setup-jkit
-description: Configure a repo for the jkit engineering skills - issue tracker (a private `.scratch` repo by default), triage labels, domain docs, and the pointers agents follow to find them. Run once per repo before the other engineering skills.
+description: Configure a repo for the jkit skills, including the tracker, domain docs, and this machine's ~/.agents/JKIT.md. Run once per repo.
 disable-model-invocation: true
 ---
 
@@ -11,7 +11,9 @@ Scaffold the per-repo configuration the engineering skills read:
 - **Issue tracker** - where efforts and tickets live. Default: `.scratch/`, a gitignored folder inside the repo that is its own private git repo.
 - **Triage labels** - the strings for the five canonical triage roles.
 - **Domain docs** - `CONTEXT.md` at the repo root; ADRs beside the tracker docs.
-- **Personal docs** - the planner repo, `workspaces.md`, `stack.md` and `people.md` that the daily skills read.
+- **Machine config** - `~/.agents/JKIT.md`, the only copy of the planner repo, stack, cloud use, and workspace list. See [personal-docs.md](./personal-docs.md).
+- **People** - `people.md` in the tracker docs, for this workspace.
+- **Cloud environment** - optional. A spec, setup state, and install script in the tracker's cloud folder.
 - **Bridge** - the pointer chain from the committed `AGENTS.md` to the gitignored tracker docs. Search tools skip gitignored files, so agents find tracker docs only through explicit paths.
 
 Explore, present what you found, confirm with the user, then write.
@@ -28,14 +30,16 @@ Read whatever exists:
 - `.scratch/` - its layout, whether it is a git repo, and its remote.
 - `.gitignore` - are `.scratch/`, `AGENTS.local.md` and `docs/agents/` ignored?
 - ADRs in `docs/adr/`, `.scratch/docs/adr/` and `src/*/docs/adr/`.
-- `~/.agents/jkit.md` and the planner repo it names; whether this repo is listed in `workspaces.md`; `.scratch/docs/people.md` and `.scratch/docs/stack.md`.
+- `~/.agents/JKIT.md`. When it is missing, say so. When it is present, check whether this repo is listed under Workspaces.
+- `people.md` in the tracker docs folder.
+- The tracker's cloud folder, when it exists.
 - Prior output of this skill in `.scratch/docs/` or `docs/agents/`.
 - Is the `triage` skill installed? This decides whether Section B runs.
 - Monorepo signals - `pnpm-workspace.yaml`, a `workspaces` field in `package.json`, or populated `packages/*` with their own `src/`. Their absence means single-context, which is almost every repo.
 
 ### 2. Present findings and ask
 
-Summarise what's present and what's missing, then take the sections in order - one section, one answer, then the next. Lead each with the recommended answer so the user can accept it in a word. Skip a section exploration already settled.
+Summarise what's present and what's missing, then take the sections in order - one section, one answer, then the next. Lead each with the recommended answer so the user can accept it in a word. Skip a section exploration already settled. Section D's first-time branch is the exception: it grills one field at a time until the machine config is settled.
 
 **Section A - Issue tracker.** Skills like `to-tickets`, `triage` and `jkit` read and write it. Recommend `.scratch` unless exploration shows the repo already tracks work elsewhere:
 
@@ -54,20 +58,40 @@ The defaults are the five canonical roles, each label equal to its name: `needs-
 
 **Section C - Domain docs.** Write **single-context** without asking: one `CONTEXT.md` at the repo root. Offer **multi-context** - a root `CONTEXT-MAP.md` pointing to per-context `CONTEXT.md` files - only when exploration found monorepo signals.
 
-**Section D - Personal docs.** Seed whatever is missing from [personal-docs.md](./personal-docs.md):
+**Section D - Machine config.** Follow [personal-docs.md](./personal-docs.md).
 
-- No planner repo: offer to create a private `<username>/daily-planner` and record its path in `~/.agents/jkit.md`.
-- This repo missing from `workspaces.md`: offer to add it.
-- No `people.md`: draft one with the user from the names in tickets and recent commits.
-- `stack.md`: ask only whether this workspace needs its own override.
+- **File present.** Offer to add this repo under Workspaces when it is missing: repo git URL from `git remote`, tracker git URL from Section A, local paths for checkouts on this machine. Leave the other fields as they are.
+- **File missing.** Ask one question:
+
+  > Do you already have a `~/.agents/JKIT.md` on another machine? (recommended: **no** on a first setup)
+
+  On **yes**, the user pastes it. Write that paste to `~/.agents/JKIT.md` and fill local paths for checkouts on this machine. On **no**, read the `grilling` skill and follow it. Keep each round to one field, in the field order personal-docs.md lists, and give a recommended answer:
+
+  - Planner git URL: `https://github.com/<login>/daily-planner.git`. Offer to create that private repo when it does not exist.
+  - Planner local path: a checkout found on this machine, otherwise blank.
+  - Personal assistant, 1:1 harness, IDE, comms sources: the tools the user names. Leave a line blank until they name one.
+  - First workspace: this repo. Repo URL from `git remote`. Tracker URL `<login>/<repo>-scratch` for a `.scratch` tracker, otherwise the tracker from Section A. Local paths: checkouts on this machine, otherwise blank. Then ask whether to add another workspace.
+  - Cloud use: `none`.
+
+  When the frontier is empty and the user confirms the shared understanding, write `~/.agents/JKIT.md`.
+
+- **`people.md` missing.** Draft one from names in tickets and recent commits, as personal-docs.md shows.
+
+**Section E - Cloud environment.** Skip when Cloud use is `none` and the user does not ask.
+
+> Record a cloud environment for this repo? (recommended: **yes** when Cloud use names a provider, otherwise **no**)
+
+On **yes**, read [cloud.md](./cloud.md) and follow it.
 
 ### 3. Confirm
 
-Show drafts of every file step 4 writes, and let the user edit them. Call out the `AGENTS.md` line separately: it lands in a shared, committed file.
+Show drafts of every file step 4 writes, and let the user edit them. Call out two of them: the `AGENTS.md` line lands in a shared, committed file, and `~/.agents/JKIT.md` stays on this machine.
 
 ### 4. Write
 
 The **tracker docs folder** is `.scratch/docs/` for a `.scratch` tracker and `docs/agents/` for any other tracker.
+
+The **cloud folder** is `cloud/` inside a `.scratch` tracker. For any other tracker it is `cloud/` at the repo root, committed so a fresh machine can run it.
 
 **`.scratch` tracker:**
 
@@ -84,7 +108,10 @@ The **tracker docs folder** is `.scratch/docs/` for a `.scratch` tracker and `do
    - `issue-tracker.md` from [issue-tracker-local.md](./issue-tracker-local.md), [issue-tracker-github.md](./issue-tracker-github.md) or [issue-tracker-gitlab.md](./issue-tracker-gitlab.md); for "other", write it from the user's description.
    - `domain.md` from [domain.md](./domain.md).
    - `triage-labels.md` from [triage-labels.md](./triage-labels.md), only when Section B ran.
-2. Write the bridge:
+2. Write `people.md` in the tracker docs folder when Section D drafted one.
+3. Write `~/.agents/JKIT.md` from the confirmed draft.
+4. Write the cloud folder when Section E ran: `spec.md` and `state.md`, and `install.sh` when the user asked for the script.
+5. Write the bridge:
    - **`AGENTS.md`** (committed, shared with the team): ensure it carries this line, adding it only when missing. Keep it tool-agnostic - it is the only jkit trace in the shared file.
 
      > Some developers keep a personal, gitignored `AGENTS.local.md` at the repo root for issue tracking and agent process. If it exists, read it and follow it on those questions.
@@ -104,4 +131,4 @@ The **tracker docs folder** is `.scratch/docs/` for a `.scratch` tracker and `do
 
 ### 5. Done
 
-Tell the user setup is complete and which skills now read these files. They can edit the tracker docs directly; re-running this skill is only for switching trackers or starting over.
+Tell the user setup is complete and which skills now read these files: `/jkit` and the other engineering skills read the tracker docs; `/daily-planner`, `/daily-work`, and `/setup-cloud-env` read `~/.agents/JKIT.md`. They can edit the tracker docs and `~/.agents/JKIT.md` directly. Re-running this skill is for switching trackers, adding a workspace, or starting over.

@@ -7,12 +7,12 @@ disable-model-invocation: true
 
 # Daily work
 
-Plan one workspace's work day in `.scratch/daily/YYYY-MM-DD.md`. Runs when the user invokes it, when you are the personal assistant named in `stack.md`, or from `/daily-planner`. This skill plans and picks tasks; implementation happens in a fresh session.
+Plan one workspace's work day in `.scratch/daily/YYYY-MM-DD.md`. Runs when the user invokes it, when you are the personal assistant named in the Stack section of `~/.agents/JKIT.md`, or from `/daily-planner`. This skill plans and picks tasks; implementation happens in a fresh session.
 
 ## Locate
 
 1. Walk up from the current folder to the nearest repo with `.scratch/daily/`. Inside a git worktree, resolve the main checkout first (the first entry of `git worktree list`).
-2. When none is found, look briefly for the intended workspace (the repos in `workspaces.md`, the current folder's parents), then ask the user to confirm which workspace to use.
+2. When none is found, open the workspace from the Workspaces section of `~/.agents/JKIT.md` by the resolution rules in the `setup-jkit` skill's `personal-docs.md`, then ask the user to confirm which workspace to use. When `~/.agents/JKIT.md` is missing, ask the user to run `/setup-jkit` and stop.
 
 Done when the workspace root is confirmed.
 
@@ -20,7 +20,7 @@ Done when the workspace root is confirmed.
 
 1. `git pull` in `.scratch/`.
 2. Read `.scratch/AGENTS.md`, `.scratch/docs/issue-tracker.md`, `.scratch/docs/triage-labels.md` and `.scratch/docs/people.md`.
-3. Read `stack.md` - `.scratch/docs/stack.md` when it exists, else the planner repo's.
+3. Read the Stack and Cloud sections of `~/.agents/JKIT.md`. When that file is missing, ask the user to run `/setup-jkit` and stop.
 4. Read today's file (missing means today hasn't started) and the most recent earlier file in `.scratch/daily/`.
 
 ## Mode

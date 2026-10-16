@@ -7,15 +7,16 @@ disable-model-invocation: true
 
 # Daily planner
 
-Plan the user's day - intent, errands, projects, fun - and link each primary workspace's work plan. Runs when the user invokes it, or when you are the personal assistant named in `stack.md`.
+Plan the user's day - intent, errands, projects, fun - and link each primary workspace's work plan. Runs when the user invokes it, or when you are the personal assistant named in the Stack section of `~/.agents/JKIT.md`.
 
 ## Load
 
-1. Find the **planner repo** from the path in `~/.agents/jkit.md`. When that file or path is missing, ask the user where their planner repo lives.
-2. `git pull` in the planner repo.
-3. Read `stack.md`, `workspaces.md`, today's `daily/YYYY-MM-DD.md` (a missing file means today hasn't started), and the most recent earlier file in `daily/`.
+1. Read `~/.agents/JKIT.md`. When it is missing, ask the user to run `/setup-jkit` and stop.
+2. Open the planner repo by the resolution rules in the `setup-jkit` skill's `personal-docs.md`.
+3. `git pull` in the planner repo.
+4. Read today's `daily/YYYY-MM-DD.md` (a missing file means today hasn't started) and the most recent earlier file in `daily/`. Workspaces come from the Workspaces section of `~/.agents/JKIT.md`.
 
-Done when today's file has been read or found missing, and the most recent earlier file is in hand.
+Done when `~/.agents/JKIT.md` is in hand, today's file has been read or found missing, and the most recent earlier file is in hand.
 
 ## Mode
 
@@ -31,7 +32,7 @@ Move files in `daily/` older than 7 days into `daily/old/`. Delete files in `dai
 
 ## Workspaces
 
-For each workspace in `workspaces.md`, run `/daily-work` in that workspace with the same mode: read its skill file and follow it with that workspace as the root. Each run yields the link to that workspace's daily-work file.
+For each workspace in the Workspaces section of `~/.agents/JKIT.md`, open that workspace by the resolution rules in the `setup-jkit` skill's `personal-docs.md`. Run `/daily-work` there with the same mode: read its skill file and follow it with that workspace as the root. Each run yields the link to that workspace's daily-work file.
 
 Done when every listed workspace has a current daily-work file, or you've noted why one couldn't be reached.
 
