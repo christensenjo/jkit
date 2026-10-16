@@ -7,7 +7,9 @@ disable-model-invocation: true
 
 # Daily planner
 
-Plan the user's day - intent, errands, projects, fun - and link each primary workspace's work plan. Runs when the user invokes it, or when you are the personal assistant named in the Stack section of `~/.agents/JKIT.md`.
+Plan the user's day - intent, errands, projects, fun - and link each primary workspace's work plan. Runs when the user invokes it.
+
+- When you are the always-on personal assistant named in the Stack section of `~/.agents/JKIT.md`, offer to create a daily routine that runs `/daily-planner`. Create it only after they accept, using the schedule and place they name.
 
 ## Load
 

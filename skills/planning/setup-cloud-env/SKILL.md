@@ -1,6 +1,6 @@
 ---
 name: setup-cloud-env
-description: Write or refresh a repo's cloud install script so a fresh machine recreates ~/.agents/JKIT.md. Run on its own, or from /setup-jkit.
+description: Write or refresh a repo's cloud install script and ensure ~/.agents/JKIT.md is created. Run on its own, or from /setup-jkit.
 disable-model-invocation: true
 ---
 
