@@ -1,17 +1,15 @@
 # Personal docs
 
-The machine config, the planner repo, and the per-workspace people notes.
+Where `~/.agents/JKIT.md` lives, plus the planner repo and the per-workspace people notes. This section is the only definition of that path. Other skills use the full path and follow this section.
 
 ## `~/.agents/JKIT.md`
 
-One file per machine, at `~/.agents/JKIT.md`. It holds the planner repo, the stack, cloud use, and the workspace list.
+`~/.agents/JKIT.md` is `$HOME/.agents/JKIT.md`: a file in the current machine's home directory. It holds the planner repo, the stack, cloud use, and the workspace list. It is the only copy. It is never a file in the workspace repo, the planner repo, or a tracker repo.
 
-- **This machine.** `/setup-jkit` writes the file. On a first machine, with no file anywhere, it grills each field below and then writes the file. On a later machine, the user pastes the file from the other machine, and setup fills this machine's local paths.
-- **A cloud machine.** `cloud/install.sh` in the tracker's cloud folder writes the file at startup. The planner git URL, the stack, the cloud-use line, and each workspace's repo and tracker git URLs are inlined in that script. Checkout paths are discovered when the script runs. `/setup-cloud-env` copies those shared values from this machine's file into the script, and refreshes that block when the file changes.
+- **This machine.** `/setup-jkit` writes `~/.agents/JKIT.md` in the home directory. On a first machine, with no `~/.agents/JKIT.md` anywhere, it grills each field below and then writes `~/.agents/JKIT.md`. On a later machine, the user pastes `~/.agents/JKIT.md` from the other machine, and setup fills this machine's local paths in `$HOME/.agents/JKIT.md`.
+- **A cloud machine.** `cloud/install.sh` in the tracker's cloud folder writes `$HOME/.agents/JKIT.md` at startup. The planner git URL, the stack, the cloud-use line, and each workspace's repo and tracker git URLs are inlined in that script. Checkout paths are discovered when the script runs. `/setup-cloud-env` copies those shared values from `~/.agents/JKIT.md` into the script, and refreshes that block when `~/.agents/JKIT.md` changes.
 
-Local paths exist only in the machine file. When a local path is blank or the directory is missing, use a checkout whose remote matches the git URL, or clone that URL.
-
-Write the file only to `~/.agents/JKIT.md`. The planner repo, tracker repos, and workspace repos do not carry a copy.
+Local paths exist only in `~/.agents/JKIT.md`. When a local path is blank or the directory is missing, use a checkout whose remote matches the git URL, or clone that URL.
 
 ### Resolving a checkout
 

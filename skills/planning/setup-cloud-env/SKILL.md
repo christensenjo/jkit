@@ -6,7 +6,7 @@ disable-model-invocation: true
 
 # Setup cloud env
 
-Write `cloud/install.sh` for this workspace. The script is idempotent and non-interactive. A fresh machine runs it, and the script writes `~/.agents/JKIT.md` there.
+Write `cloud/install.sh` for this workspace. The script is idempotent and non-interactive. A fresh machine runs it, and the script writes `~/.agents/JKIT.md` (`$HOME/.agents/JKIT.md`) in that machine's home directory. Where that path lives: the `setup-jkit` skill's `personal-docs.md`.
 
 The file shape is the schema in the `setup-jkit` skill's `personal-docs.md`. Shared values are inlined in the script. Local paths are discovered when the script runs.
 
@@ -15,7 +15,7 @@ The file shape is the schema in the `setup-jkit` skill's `personal-docs.md`. Sha
 Use the first source that applies:
 
 1. **Local file.** When `~/.agents/JKIT.md` is readable, take the planner git URL, the stack, the cloud-use line, and each workspace's repo and tracker git URLs from it.
-2. **Paste.** When this machine cannot read that file, ask the user to paste it, or to give those same fields. Build from that.
+2. **Paste.** When this machine cannot read `~/.agents/JKIT.md`, ask the user to paste it, or to give those same fields. Build from that.
 3. **First time.** When they have no config, point them at `/setup-jkit` and stop.
 
 Carry git URLs, the stack, and the cloud-use line. Checkout paths are discovered on the fresh machine.
@@ -50,6 +50,6 @@ The script meets each of these:
 
 ## State
 
-Update `cloud/state.md`: check "Install script written" and "Config block matches the machine's JKIT config" when the write succeeds. Leave "Ran on a fresh machine" open until the user says a fresh machine completed it.
+Update `cloud/state.md`: check "Install script written" and "Config block matches `~/.agents/JKIT.md`" when the write succeeds. Leave "Ran on a fresh machine" open until the user says a fresh machine completed it.
 
 Done when `state.md` matches what was just written.

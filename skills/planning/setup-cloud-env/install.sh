@@ -1,7 +1,8 @@
 #!/usr/bin/env bash
 # Cloud machine install. Idempotent and non-interactive.
-# /setup-cloud-env refreshes the marked jkit config block from the
-# machine config. Checkout paths are discovered at runtime.
+# /setup-cloud-env refreshes the marked block from ~/.agents/JKIT.md
+# ($HOME/.agents/JKIT.md, this machine's home directory).
+# Checkout paths are discovered at runtime.
 # Shape of the file this writes: setup-jkit personal-docs.md.
 set -euo pipefail
 
@@ -116,7 +117,8 @@ if [ -n "$WORKSPACE_TRACKER_GIT" ]; then
   TRACKER_LOCAL="$(find_checkout "$WORKSPACE_TRACKER_GIT" || true)"
 fi
 mkdir -p "$HOME/.agents"
-# Repeat the workspace heading for each workspace in the machine config.
+# Repeat the workspace heading for each workspace in ~/.agents/JKIT.md.
+# $HOME/.agents/JKIT.md is that home path, not a file in the workspace repo.
 cat > "$HOME/.agents/JKIT.md" <<EOF
 # JKIT
 

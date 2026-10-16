@@ -10,7 +10,7 @@ Answer from this map. Name the skill to run and why it fits; if none fits, say s
 
 ## New to jkit? How `/jkit` is used
 
-1. In a repo, run `/setup-jkit` once. It records where tickets live (local `.scratch/` files, GitHub or GitLab) in a tracker doc, and writes `~/.agents/JKIT.md` on this machine. When a fresh machine should recreate that file, run `/setup-cloud-env`.
+1. In a repo, run `/setup-jkit` once. It records where tickets live (local `.scratch/` files, GitHub or GitLab) in a tracker doc, and writes `~/.agents/JKIT.md` (`$HOME/.agents/JKIT.md`) in this machine's home directory. When a fresh machine should recreate `~/.agents/JKIT.md`, run `/setup-cloud-env`.
 2. Then type `/jkit` with what you want in plain words: "I want to build X", "work the next ticket", "what's the status?", "triage this bug".
 3. For a big idea, `/jkit` grills you, then charts an **effort**: a map of where you're headed plus small tickets, which you approve before anything is written.
 4. Each ticket gets its own fresh session. `/jkit` hands you a copyable prompt like `/jkit Claim and complete <ticket path>`, and the agent builds it test-first, reviews it, and commits. It never merges or deploys.

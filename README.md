@@ -12,7 +12,7 @@ jkit is largely based on [Matt Pocock's skills](https://github.com/mattpocock/sk
 ## Getting Started
 
 1. Install via skills.sh `npx skills@latest add christensenjo/jkit`
-2. Run `/setup-jkit`. This will guide you through choosing an issue tracker, triage labels, and domain docs, and it writes `~/.agents/JKIT.md` on this machine. More on that below.
+2. Run `/setup-jkit`. This will guide you through choosing an issue tracker, triage labels, and domain docs, and it writes `~/.agents/JKIT.md` (`$HOME/.agents/JKIT.md`) in this machine's home directory. More on that below.
 3. Use `/jkit` with any prompt
 
 ## Skills Workflow
@@ -70,7 +70,7 @@ While it should work with any issue tracker of your choice (GitHub, GitLab, Line
 | skill | use it when |
 |---|---|
 | [`/jkit`](skills/planning/jkit/SKILL.md) | default entry point for engineering work: plan an effort, work a ticket, check status, triage, close an effort. |
-| [`/setup-jkit`](skills/planning/setup-jkit/SKILL.md) | you're starting jkit in a repo. records your tracker (`.scratch`, GitHub, GitLab), doc layout, and this machine's `~/.agents/JKIT.md`. run once per repo. |
+| [`/setup-jkit`](skills/planning/setup-jkit/SKILL.md) | you're starting jkit in a repo. records your tracker (`.scratch`, GitHub, GitLab), doc layout, and `~/.agents/JKIT.md` in this machine's home directory. run once per repo. |
 | [`/setup-cloud-env`](skills/planning/setup-cloud-env/SKILL.md) | a fresh machine should recreate `~/.agents/JKIT.md`. writes or refreshes that repo's cloud install script. |
 | [`/ask-joel`](skills/planning/ask-joel/SKILL.md) | you're new to jkit, or unsure which skill fits or whether to start a fresh chat. |
 | [`/to-spec`](skills/planning/to-spec/SKILL.md) | you want a written spec for an effort before it's split into tickets. `/jkit` uses it for you. |

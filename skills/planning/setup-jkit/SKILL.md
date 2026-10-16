@@ -11,7 +11,7 @@ Scaffold the per-repo configuration the engineering skills read:
 - **Issue tracker** - where efforts and tickets live. Default: `.scratch/`, a gitignored folder inside the repo that is its own private git repo.
 - **Triage labels** - the strings for the five canonical triage roles.
 - **Domain docs** - `CONTEXT.md` at the repo root; ADRs beside the tracker docs.
-- **Machine config** - `~/.agents/JKIT.md`, the only copy of the planner repo, stack, cloud use, and workspace list. See [personal-docs.md](./personal-docs.md).
+- **`~/.agents/JKIT.md`** - planner repo, stack, cloud use, and workspace list, in the current machine's home directory (`$HOME/.agents/JKIT.md`). See [personal-docs.md](./personal-docs.md).
 - **People** - `people.md` in the tracker docs, for this workspace.
 - **Cloud environment** - optional. A spec, setup state, and install script in the tracker's cloud folder.
 - **Bridge** - the pointer chain from the committed `AGENTS.md` to the gitignored tracker docs. Search tools skip gitignored files, so agents find tracker docs only through explicit paths.
@@ -30,7 +30,7 @@ Read whatever exists:
 - `.scratch/` - its layout, whether it is a git repo, and its remote.
 - `.gitignore` - are `.scratch/`, `AGENTS.local.md` and `docs/agents/` ignored?
 - ADRs in `docs/adr/`, `.scratch/docs/adr/` and `src/*/docs/adr/`.
-- `~/.agents/JKIT.md`. When it is missing, say so. When it is present, check whether this repo is listed under Workspaces.
+- Note whether `~/.agents/JKIT.md` exists in this machine's home directory and whether it lists this repo under Workspaces.
 - `people.md` in the tracker docs folder.
 - The tracker's cloud folder, when it exists.
 - Prior output of this skill in `.scratch/docs/` or `docs/agents/`.
@@ -39,7 +39,7 @@ Read whatever exists:
 
 ### 2. Present findings and ask
 
-Summarise what's present and what's missing, then take the sections in order - one section, one answer, then the next. Lead each with the recommended answer so the user can accept it in a word. Skip a section exploration already settled. Section D's first-time branch is the exception: it grills one field at a time until the machine config is settled.
+Summarise what's present and what's missing, then take the sections in order - one section, one answer, then the next. Lead each with the recommended answer so the user can accept it in a word. Skip a section exploration already settled. Section D's first-time branch is the exception: it grills one field at a time until `~/.agents/JKIT.md` is settled.
 
 **Section A - Issue tracker.** Skills like `to-tickets`, `triage` and `jkit` read and write it. Recommend `.scratch` unless exploration shows the repo already tracks work elsewhere:
 
@@ -58,14 +58,15 @@ The defaults are the five canonical roles, each label equal to its name: `needs-
 
 **Section C - Domain docs.** Write **single-context** without asking: one `CONTEXT.md` at the repo root. Offer **multi-context** - a root `CONTEXT-MAP.md` pointing to per-context `CONTEXT.md` files - only when exploration found monorepo signals.
 
-**Section D - Machine config.** Follow [personal-docs.md](./personal-docs.md).
+**Section D - `~/.agents/JKIT.md`.** Follow [personal-docs.md](./personal-docs.md). Setup finishes with `~/.agents/JKIT.md` present in this machine's home directory and this repo listed under Workspaces.
 
-- **File present.** Offer to add this repo under Workspaces when it is missing: repo git URL from `git remote`, tracker git URL from Section A, local paths for checkouts on this machine. Leave the other fields as they are.
+- **File present, repo unlisted.** Add this repo under Workspaces: repo git URL from `git remote`, tracker git URL from Section A, local paths for checkouts on this machine. Leave the other fields as they are.
+- **File present, repo listed.** Leave `~/.agents/JKIT.md` as it is.
 - **File missing.** Ask one question:
 
   > Do you already have a `~/.agents/JKIT.md` on another machine? (recommended: **no** on a first setup)
 
-  On **yes**, the user pastes it. Write that paste to `~/.agents/JKIT.md` and fill local paths for checkouts on this machine. On **no**, read the `grilling` skill and follow it. Keep each round to one field, in the field order personal-docs.md lists, and give a recommended answer:
+  On **yes**, the user pastes it. Write that paste to `~/.agents/JKIT.md` (`$HOME/.agents/JKIT.md`) and fill local paths for checkouts on this machine. On **no**, read the `grilling` skill and follow it. Keep each round to one field, in the field order personal-docs.md lists, and give a recommended answer:
 
   - Planner git URL: `https://github.com/<login>/daily-planner.git`. Offer to create that private repo when it does not exist.
   - Planner local path: a checkout found on this machine, otherwise blank.
@@ -73,7 +74,7 @@ The defaults are the five canonical roles, each label equal to its name: `needs-
   - First workspace: this repo. Repo URL from `git remote`. Tracker URL `<login>/<repo>-scratch` for a `.scratch` tracker, otherwise the tracker from Section A. Local paths: checkouts on this machine, otherwise blank. Then ask whether to add another workspace.
   - Cloud use: `none`.
 
-  When the frontier is empty and the user confirms the shared understanding, write `~/.agents/JKIT.md`.
+  When the frontier is empty and the user confirms the shared understanding, write `~/.agents/JKIT.md` in the home directory. `~/.agents/JKIT.md` lists this repo under Workspaces.
 
 - **`people.md` missing.** Draft one from names in tickets and recent commits, as personal-docs.md shows.
 
@@ -85,7 +86,7 @@ On **yes**, read [cloud.md](./cloud.md) and follow it.
 
 ### 3. Confirm
 
-Show drafts of every file step 4 writes, and let the user edit them. Call out two of them: the `AGENTS.md` line lands in a shared, committed file, and `~/.agents/JKIT.md` stays on this machine.
+Show drafts of every file step 4 writes, and let the user edit them. Call out two of them: the `AGENTS.md` line lands in a shared, committed file, and `~/.agents/JKIT.md` is written at `$HOME/.agents/JKIT.md`, where [personal-docs.md](./personal-docs.md) says it lives.
 
 ### 4. Write
 
@@ -109,7 +110,7 @@ The **cloud folder** is `cloud/` inside a `.scratch` tracker. For any other trac
    - `domain.md` from [domain.md](./domain.md).
    - `triage-labels.md` from [triage-labels.md](./triage-labels.md), only when Section B ran.
 2. Write `people.md` in the tracker docs folder when Section D drafted one.
-3. Write `~/.agents/JKIT.md` from the confirmed draft.
+3. Write `~/.agents/JKIT.md` (`$HOME/.agents/JKIT.md`) from the confirmed draft. Done when that home path exists and lists this repo under Workspaces. When it was missing, this is the grilling result. When this repo was unlisted, this write adds it.
 4. Write the cloud folder when Section E ran: `spec.md` and `state.md`, and `install.sh` when the user asked for the script.
 5. Write the bridge:
    - **`AGENTS.md`** (committed, shared with the team): ensure it carries this line, adding it only when missing. Keep it tool-agnostic - it is the only jkit trace in the shared file.

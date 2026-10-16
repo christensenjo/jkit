@@ -20,7 +20,7 @@ Done when the workspace root is confirmed.
 
 1. `git pull` in `.scratch/`.
 2. Read `.scratch/AGENTS.md`, `.scratch/docs/issue-tracker.md`, `.scratch/docs/triage-labels.md` and `.scratch/docs/people.md`.
-3. Read the Stack and Cloud sections of `~/.agents/JKIT.md`. When that file is missing, ask the user to run `/setup-jkit` and stop.
+3. Read the Stack and Cloud sections of `~/.agents/JKIT.md` (`$HOME/.agents/JKIT.md`). When `~/.agents/JKIT.md` is missing, ask the user to run `/setup-jkit` and stop.
 4. Read today's file (missing means today hasn't started) and the most recent earlier file in `.scratch/daily/`.
 
 ## Mode

@@ -11,7 +11,7 @@ Plan the user's day - intent, errands, projects, fun - and link each primary wor
 
 ## Load
 
-1. Read `~/.agents/JKIT.md`. When it is missing, ask the user to run `/setup-jkit` and stop.
+1. Read `~/.agents/JKIT.md` (`$HOME/.agents/JKIT.md`). When it is missing, ask the user to run `/setup-jkit` and stop.
 2. Open the planner repo by the resolution rules in the `setup-jkit` skill's `personal-docs.md`.
 3. `git pull` in the planner repo.
 4. Read today's `daily/YYYY-MM-DD.md` (a missing file means today hasn't started) and the most recent earlier file in `daily/`. Workspaces come from the Workspaces section of `~/.agents/JKIT.md`.

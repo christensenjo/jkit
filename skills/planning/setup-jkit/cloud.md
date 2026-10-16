@@ -44,7 +44,7 @@ Done when `spec.md` and `state.md` match the confirmed drafts, and the install s
 - **Clones:** <planner, repo, and tracker git URLs>
 - **Skills:** <home skills directories>
 - **Data:** services on this machine only. Shared and production data stay unused. Secrets stay out of this folder.
-- **Config:** `cloud/install.sh` inlines the shared JKIT values and writes `~/.agents/JKIT.md`. Checkout paths are discovered when the script runs.
+- **Config:** `cloud/install.sh` inlines the shared values from `~/.agents/JKIT.md` and writes `$HOME/.agents/JKIT.md`. Checkout paths are discovered when the script runs.
 ```
 
 ## `cloud/state.md`
@@ -54,7 +54,7 @@ Done when `spec.md` and `state.md` match the confirmed drafts, and the install s
 
 - [ ] Spec recorded
 - [ ] Install script written
-- [ ] Config block matches the machine's JKIT config
+- [ ] Config block matches `~/.agents/JKIT.md`
 - [ ] Ran on a fresh machine
 ```
 
