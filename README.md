@@ -85,6 +85,7 @@ While it should work with any issue tracker of your choice (GitHub, GitLab, Line
 | [`/improve-codebase-architecture`](skills/engineering/improve-codebase-architecture/SKILL.md) | you have a spare moment to find deepening opportunities, shown in a visual report. |
 | [`/resolving-merge-conflicts`](skills/engineering/resolving-merge-conflicts/SKILL.md) | you're mid-merge or mid-rebase with conflicts. resolves by each side's intent, never aborts. |
 | [`/grilling`](skills/chat/grilling/SKILL.md) | you want a plan or idea stress-tested, a round of questions at a time. |
+| [`/guided-review`](skills/chat/guided-review/SKILL.md) | you want a draft PR (esp. cloud-agent) walked chunk by chunk with snippets and per-element confirmation. first draft. |
 | [`/bruh`](skills/chat/bruh/SKILL.md) | the last message didn't land. restates it simply, with the context you were missing. |
 | [`/handoff`](skills/chat/handoff/SKILL.md) | you're moving work to a new tool, repo, colleague, or side task and need a portable summary. |
 | [`/daily-planner`](skills/productivity/daily-planner/SKILL.md) | you want one daily file tracking everything in your life at a glance. |

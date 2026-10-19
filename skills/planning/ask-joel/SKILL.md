@@ -25,12 +25,13 @@ Answer from this map. Name the skill to run and why it fits; if none fits, say s
 - **`/daily-work`** - the day's work in one workspace, with copyable `/jkit` prompts per ticket.
 - **`/bruh`** - the last message didn't land; restate it simply, with the missing context.
 - **`/handoff`** - a portable summary for a new tool, a new repo, a colleague, or a side task forked mid-phase.
+- **`/guided-review`** - walk a draft PR (esp. cloud-agent) chunk by chunk with snippets and per-element confirmation. first draft.
 - **`/resolving-merge-conflicts`** - already mid-merge or mid-rebase with conflicts.
 - **`/diagnosing-bugs`** - a hard bug, flake or regression that resists a first look.
 
 ## Under `/jkit`
 
-Run directly only when you want just that piece: `grilling`, `domain-modeling`, `codebase-design`, `prototype`, `research`, `tdd`, `code-review`, `to-spec`, `to-tickets`, `triage`, `improve-codebase-architecture`, `writing-for-agents` (for writing skills and agent docs).
+Run directly only when you want just that piece: `grilling`, `guided-review`, `domain-modeling`, `codebase-design`, `prototype`, `research`, `tdd`, `code-review`, `to-spec`, `to-tickets`, `triage`, `improve-codebase-architecture`, `writing-for-agents` (for writing skills and agent docs).
 
 ## Experimenting
 
